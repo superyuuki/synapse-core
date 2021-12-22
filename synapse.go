@@ -1,31 +1,33 @@
 package main
 
 import (
-	"github.com/gookit/config/v2"
-	"github.com/gookit/config/v2/yaml"
+	"fmt"
 	"log"
+	"synapse/advert"
+	"synapse/constants"
+	"synapse/gui"
+	"synapse/logging"
 )
 
-type twitchConfig struct {
-	twitchAddress string `mapstructure:"twitchAddress"`
-}
-
-type driver interface {
-}
-
 func main() {
-	log.Println("[INIT] Launching Synapse by Yuuki")
 
-	log.Println("[INIT] Loading configuration")
-
-	config.AddDriver(yaml.Driver)
-	twitchConfig := twitchConfig{}
-
-	err := config.BindStruct("../config.yml", &twitchConfig)
+	logger, lgO, err := logging.New()
+	_, amO, err := advert.New()
+	seO, err := constants.New()
+	hpO, err := constants.New()
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
-	log.Println(twitchConfig.twitchAddress)
+	//init starting values, etc etc
+
+	logger.Info(fmt.Sprintf("%s loaded and ready to whoop some streamer ass!", constants.Ver))
+	logger.Info("https://discord.com/superyuuki")
+	logger.Error("Hello bitbuckets ;)")
+
+	if err := gui.InitGui(lgO, amO, seO, hpO); err != nil {
+		log.Fatalln(err)
+	}
+
 }
