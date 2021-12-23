@@ -8,10 +8,12 @@ import (
 	"github.com/mum4k/termdash/linestyle"
 	"github.com/mum4k/termdash/terminal/tcell"
 	"github.com/mum4k/termdash/terminal/terminalapi"
-	"synapse/constants"
+	"synapse/synapse/constants"
 )
 
-func InitGui(lg []container.Option, am []container.Option, se []container.Option, hp []container.Option) error {
+const containerId = "rootId"
+
+func InitGui(ctx context.Context, cn func(), vmap map[Identifier]*GuiIdentifier) error {
 
 	t, err := tcell.New()
 	if err != nil {
@@ -19,27 +21,24 @@ func InitGui(lg []container.Option, am []container.Option, se []container.Option
 	}
 	defer t.Close()
 
-	ctx, cn := context.WithCancel(context.Background())
-	defer cn()
-
 	c, err := container.New(
 		t,
 		container.ID(containerId),
 		container.Border(linestyle.Light),
-		container.BorderTitle(fmt.Sprintf("%s | Press q to quit", constants.Ver)),
+		container.BorderTitle(fmt.Sprintf("%s | Press Q to quit", constants.Ver)),
 	)
 
 	if err != nil {
 		return err
 	}
 
-	headboard, err := newGui(c, lg, am, se, hp)
+	headboard, err := NewGui(c, vmap)
 
 	if err != nil {
 		return err
 	}
 
-	if err := headboard.SetLogger(); err != nil {
+	if err := headboard.Mux(LoggerId); err != nil {
 		return err
 	}
 

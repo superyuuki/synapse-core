@@ -6,6 +6,7 @@ import (
 	"github.com/mum4k/termdash/container"
 	"github.com/mum4k/termdash/linestyle"
 	"github.com/mum4k/termdash/widgets/text"
+	"synapse/synapse/gui"
 	"time"
 )
 
@@ -29,13 +30,13 @@ func (l LoggerImpl) Info(details string) {
 }
 
 func (l LoggerImpl) Prefixed(prefix string, details string, color cell.Color) {
-	err := l.text.Write(fmt.Sprintf("[%s] [Info] [%s] %s \n", time.Now().Format("2006-01-02 15:04:05"), prefix, details), text.WriteCellOpts(cell.FgColor(color)))
+	err := l.text.Write(fmt.Sprintf("[%s] [%s] %s \n", time.Now().Format("2006-01-02 15:04:05"), prefix, details), text.WriteCellOpts(cell.FgColor(color)))
 	if err != nil {
 		panic(err)
 	}
 }
 
-func New() (Logger, []container.Option, error) {
+func New() (Logger, *gui.GuiIdentifier, error) {
 
 	txt, err := text.New(text.RollContent(), text.WrapAtWords())
 
@@ -45,8 +46,16 @@ func New() (Logger, []container.Option, error) {
 
 	logger := &LoggerImpl{text: txt}
 
-	opt := []container.Option{container.PlaceWidget(txt), container.Border(linestyle.Light), container.BorderTitle("Logs")}
+	mxi := gui.NewIdentifier(
+		"(l)ogger",
+		'l',
+		[]container.Option{
+			container.PlaceWidget(txt),
+			container.Border(linestyle.Light),
+			container.BorderTitle("Logs"),
+		},
+	)
 
-	return logger, opt, nil
+	return logger, mxi, nil
 
 }
