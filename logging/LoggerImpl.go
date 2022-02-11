@@ -6,7 +6,7 @@ import (
 	"github.com/mum4k/termdash/container"
 	"github.com/mum4k/termdash/linestyle"
 	"github.com/mum4k/termdash/widgets/text"
-	"synapse/synapse/gui"
+	"synapse/gui"
 	"time"
 )
 

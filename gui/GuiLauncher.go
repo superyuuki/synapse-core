@@ -8,7 +8,7 @@ import (
 	"github.com/mum4k/termdash/linestyle"
 	"github.com/mum4k/termdash/terminal/tcell"
 	"github.com/mum4k/termdash/terminal/terminalapi"
-	"synapse/synapse/constants"
+	"synapse/constants"
 )
 
 const containerId = "rootId"

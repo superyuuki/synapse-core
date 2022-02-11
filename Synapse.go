@@ -1,13 +1,13 @@
-package synapse
+package main
 
 import (
 	"context"
 	"fmt"
 	"log"
-	"synapse/synapse/advert/httpad"
-	"synapse/synapse/constants"
-	"synapse/synapse/gui"
-	"synapse/synapse/logging"
+	"synapse/advert"
+	"synapse/constants"
+	gui2 "synapse/gui"
+	"synapse/logging"
 )
 
 func Init() {
@@ -17,11 +17,11 @@ func Init() {
 
 	logger, lgO, err := logging.New()
 	//_, amO, err := amazonad.New()
-	_, ht0, err := httpad.NewHttp(ctx, logger)
+	_, ht0, err := advert.NewHttp(ctx, logger)
 
-	build := map[gui.Identifier]*gui.GuiIdentifier{
-		gui.LoggerId: lgO,
-		"httpad":     ht0,
+	build := map[gui2.Identifier]*gui2.GuiIdentifier{
+		gui2.LoggerId: lgO,
+		"http":        ht0,
 	}
 
 	if err != nil {
@@ -32,7 +32,7 @@ func Init() {
 	logger.Info("https://discord.com/superyuuki")
 	logger.Error("Hello bitbuckets ;)")
 
-	if err := gui.InitGui(ctx, cn, build); err != nil {
+	if err := gui2.InitGui(ctx, cn, build); err != nil {
 		log.Fatalln(err)
 	}
 }
